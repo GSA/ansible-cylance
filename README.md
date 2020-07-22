@@ -30,7 +30,7 @@ Example Playbook
 ```yaml
 - hosts: servers
   roles:
-     - ansible-cylance
+     - cylance
 ```
 
 Public domain
