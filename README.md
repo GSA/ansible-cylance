@@ -1,48 +1,43 @@
-ansible-cylance
+cylance [![circleci](https://circleci.com/gh/GSA/ansible-cylance.svg?style=svg)](https://circleci.com/gh/GSA/ansible-cylance)
 =========
 
-Cylance keeps your organization ahead of threat actors with AI-driven security tools that provide best-in-class detection, prevention, and response capabilities. Our highly trained specialists are available to augment your security staff or install our advanced solutions tailored to your exact needs. This ansible role installs and configures the agent required to communicate with client machines.
+This ansible role installs and configures the cylance agent required to communicate with client machines.
 
 Requirements
 ------------
-```bash
-redhat_cylance_agent_filename: #redhat installer msi
-windows_cylance_agent_filename: #windows installer msi
-cylance_venue_id: #cylance venue id
-cylance_proxy_id: #cylance proxy url
-cylance_pid_id: #cylance pid id
 
-```
+Required Packages
+- cylance.rpm - redhat installer package
+- cylance.msi - windows installer package
+
 Role Variables
 --------------
 
-```bash
-None
-```
+- redhat_cylance_agent_filename: #redhat installer msi
+- windows_cylance_agent_filename: #windows installer msi
+- cylance_venue_id: #cylance venue id
+- cylance_proxy_id: #cylance proxy url
+- cylance_pid_id: #cylance pid id
 
 Dependencies
 ------------
-Acquire Installers
-```bash
-cylance.rpm - redhat installer package
-cylance.msi - windows installer package
-```
+
+None
 
 Example Playbook
 ----------------
 
-```bash
+```yaml
     - hosts: servers
       roles:
          - ansible-cylance
 ```
 
-License
--------
+Public domain
+-------------
 
-MIT
+This project is in the worldwide [public domain](LICENSE.md). As stated in [CONTRIBUTING](CONTRIBUTING.md):
 
-Author Information
-------------------
-
-Lance White - GSA/GEO
+> This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+>
+> All contributions to this project will be released under the CC0 dedication. By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
