@@ -28,9 +28,9 @@ Example Playbook
 ----------------
 
 ```yaml
-    - hosts: servers
-      roles:
-         - ansible-cylance
+- hosts: servers
+  roles:
+     - ansible-cylance
 ```
 
 Public domain
