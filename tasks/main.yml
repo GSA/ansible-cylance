@@ -1,2 +1,24 @@
 ---
-# tasks file for template
+- name: install cylance agent (windows)
+  win_package:
+    path: '{{ win_agent_path }}\\{{ item.name }}'
+    chdir: '{{ win_agent_path }}'
+    arguments:
+      - PIDKEY={{ cylance_pid_id }}
+      - LAUNCHAPP=0
+      - VENUEZONE={{ cylance_venue_id }}
+      - PROXY_SERVER={{ cylance_proxy_id }}
+    state: present
+    log_path: '{{ win_agent_logs }}\\{{ item.name }}_log.txt'
+    validate_certs: no
+  with_items:
+    - { name: '{{ windows_cylance_agent_filename }}' }
+  when: ansible_os_family = 'Windows'
+
+- name: install cylance agent (redhat)
+  yum:
+    name: '{{ lin_agent_path }}/{{ item.name }}'
+    state: present
+  with_items:
+    - { name: '{{ redhat_cylance_agent_filename }}'}
+  when: ansible_os_family = 'RedHat'
