@@ -19,7 +19,6 @@
       - PIDKEY={{ cylance_pid_id }}
       - LAUNCHAPP=0
       - VENUEZONE={{ cylance_venue_id }}
-      - PROXY_SERVER={{ cylance_proxy_id }}
     state: present
     log_path: '{{ win_agent_logs }}\\{{ item.name }}_log.txt'
     validate_certs: no
