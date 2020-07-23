@@ -6,18 +6,20 @@ This ansible role installs and configures the cylance agent required to communic
 Requirements
 ------------
 
-Required Packages
+Required Packages (this role requires access to the following packages/installers)
 - cylance.rpm - redhat installer package
 - cylance.msi - windows installer package
 
 Role Variables
 --------------
 
-- redhat_cylance_agent_filename: #redhat installer msi
-- windows_cylance_agent_filename: #windows installer msi
-- cylance_venue_id: #cylance venue id
-- cylance_proxy_id: #cylance proxy url
-- cylance_pid_id: #cylance pid id
+| Variable | Default | Purpose |
+| ------ | ------ | ------ |
+| redhat_cylance_agent_filename | "" | redhat installer msi |
+| windows_cylance_agent_filename | "" | windows installer msi |
+| cylance_venue_id | "" | cylance venue id |
+| cylance_proxy_id | "" | cylance proxy url |
+| cylance_pid_id | "" | cylance key |
 
 Dependencies
 ------------
