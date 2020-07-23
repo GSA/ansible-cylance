@@ -18,7 +18,6 @@ Role Variables
 | redhat_cylance_agent_filename | "" | redhat installer msi |
 | windows_cylance_agent_filename | "" | windows installer msi |
 | cylance_venue_id | "" | cylance venue id |
-| cylance_proxy_id | "" | cylance proxy url |
 | cylance_pid_id | "" | cylance key |
 
 Dependencies

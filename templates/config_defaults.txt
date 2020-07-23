@@ -1,0 +1,4 @@
+InstallToken={{ cylance_pid_id }}
+SelfProtectionLevel=1
+VenueZone={{ cylance_venue_id }}
+LogLevel=1

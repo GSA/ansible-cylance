@@ -33,6 +33,11 @@
     mode: '0755'
   when: ansible_os_family = 'RedHat'
 
+- name: move config_defaults.j2 to {{ lin_cylance_path }}/config_defaults.txt directory
+  template:
+    src: config_defaults.j2
+    dest: '{{ lin_cylance_path }}/config_defaults.txt'
+
 - name: install cylance agent (redhat)
   yum:
     name: '{{ lin_agent_path }}/{{ item.name }}'
