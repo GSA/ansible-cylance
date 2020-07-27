@@ -1,0 +1,37 @@
+---
+- name: create {{ lin_install_path }} directory
+  file:
+    path: '{{ lin_install_path }}'
+    state: directory
+
+- name: checking for installer
+  stat:
+    path: '{{ lin_agent_path }}{{ redhat_cylance_agent_filename }}'
+  register: installer
+
+- name: move installer to {{ lin_install_path }} directory
+  copy:
+    src: '{{ lin_agent_path }}/{{ item.name }}'
+    dest: '{{ lin_agent_path }}/{{ item.name }}'
+    mode: '0755'
+  with_items:
+    - { name: '{{ redhat_cylance_agent_filename }}'}
+  when: installer.stat.exists == False
+
+- name: create {{ lin_agent_path }} directory
+  file:
+    path: '{{ lin_agent_path }}'
+    state: directory
+    mode: '0755'
+
+- name: move config_defaults.j2 to {{ lin_install_path }}/config_defaults.txt directory
+  template:
+    src: config_defaults.j2
+    dest: '{{ lin_install_path }}/config_defaults.txt'
+
+- name: install cylance agent (redhat)
+  yum:
+    name: '{{ lin_agent_path }}/{{ item.name }}'
+    state: installed
+  with_items:
+    - { name: '{{ redhat_cylance_agent_filename }}'}

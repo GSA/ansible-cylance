@@ -1,47 +1,8 @@
 ---
-- name: create win_agent_path directory
-  win_file:
-    path: '{{ win_agent_path }}'
-    state: directory
-  when: ansible_os_family = 'Windows'
+- name: RedHat
+  include: redhat.yml
+  when: ansible_os_family == 'RedHat'
 
-- name: create win_agent_logs directory
-  win_file:
-    path: '{{ win_agent_logs }}'
-    state: directory
-  when: ansible_os_family = 'Windows'
-
-- name: install cylance agent (windows)
-  win_package:
-    path: '{{ win_agent_path }}\\{{ item.name }}'
-    chdir: '{{ win_agent_path }}'
-    arguments:
-      - PIDKEY={{ cylance_pid_id }}
-      - LAUNCHAPP=0
-      - VENUEZONE={{ cylance_venue_id }}
-    state: present
-    log_path: '{{ win_agent_logs }}\\{{ item.name }}_log.txt'
-    validate_certs: no
-  with_items:
-    - { name: '{{ windows_cylance_agent_filename }}' }
-  when: ansible_os_family = 'Windows'
-
-- name: create lin_agent_path directory
-  file:
-    path: '{{ lin_agent_path }}'
-    state: directory
-    mode: '0755'
-  when: ansible_os_family = 'RedHat'
-
-- name: move config_defaults.j2 to {{ lin_cylance_path }}/config_defaults.txt directory
-  template:
-    src: config_defaults.j2
-    dest: '{{ lin_cylance_path }}/config_defaults.txt'
-
-- name: install cylance agent (redhat)
-  yum:
-    name: '{{ lin_agent_path }}/{{ item.name }}'
-    state: present
-  with_items:
-    - { name: '{{ redhat_cylance_agent_filename }}'}
-  when: ansible_os_family = 'RedHat'
+- name: Windows
+  include: windows.yml
+  when: ansible_os_family == 'Windows'
