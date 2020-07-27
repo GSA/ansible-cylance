@@ -16,7 +16,7 @@
     mode: '0755'
   with_items:
     - { name: '{{ redhat_cylance_agent_filename }}'}
-  when: installer.stat.exists
+  when: not installer.stat.exists
 
 - name: create {{ lin_agent_path }} directory
   file:

@@ -20,7 +20,7 @@
     dest: '{{ win_agent_path }}{{ item.name }}'
   with_items:
     - { name: '{{ windows_cylance_agent_filename }}'}
-  when: installer.stat.exists
+  when: not installer.stat.exists
 
 - name: install cylance agent (windows)
   win_package:
