@@ -1,2 +1,4 @@
 ---
 # vars file for ansible-cylance
+cylance_pid_id: ""
+cylance_venue_id: ""

@@ -1,6 +1,8 @@
 ---
 # defaults file for ansible-cylance
-win_agent_path: "C:\\Temp\\Agents" # default agent path directory windows
+win_agent_path: "C:\\Temp\\Agents\\" # default agent path directory windows
 lin_agent_path: "/opt/GSA/install_files" # default agent path directory redhat
 win_agent_logs: "C:\\Temp\\Agents\\Logs" # default agent log directory windows
-lin_cylance_path: "/opt/cylance" # default redhat agent install directory
+lin_install_path: "/opt/cylance" # default redhat agent install directory
+windows_cylance_agent_filename: "cylance.msi"
+redhat_cylance_agent_filename: "cylance.rpm"
