@@ -15,7 +15,7 @@ Role Variables
 
 | Variable | Default | Purpose |
 | ------ | ------ | ------ |
-| redhat_cylance_agent_filename | "" | redhat installer msi |
+| redhat_cylance_agent_filename | "" | redhat installer rpm |
 | windows_cylance_agent_filename | "" | windows installer msi |
 | cylance_venue_id | "" | cylance venue id |
 | cylance_pid_id | "" | cylance key |
