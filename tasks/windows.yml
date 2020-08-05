@@ -16,8 +16,9 @@
     path: '{{ windows_cylance_agent_url }}'
     state: present
     log_path: '{{ windows_agent_log }}\\cylance_log.txt'
+    product_id: '{{ windows_cylance_product_id }}'
     validate_certs: no
     arguments:
-      - PIDKEY={{ cylance_pid_id }}
-      - LAUNCHAPP=0
-      - VENUEZONE={{ cylance_venue_id }}
+      - /PIDKEY={{ cylance_pid_id }}
+      - /LAUNCHAPP=0
+      - /VENUEZONE={{ cylance_venue_id }}

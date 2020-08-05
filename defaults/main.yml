@@ -3,3 +3,7 @@
 redhat_agent_path: "/opt/cylance" # default redhat install directory
 windows_agent_path: "C:\\Program Files\\Cylance\\Desktop" # default windows install directory
 windows_agent_log: "C:\\Temp\\Logs" # default agent windows log directory
+redhat_cylance_agent_url: ""
+windows_cylance_agent_url: ""
+cylance_pid_id: ""
+cylance_venue_id: ""
