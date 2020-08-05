@@ -1,37 +1,23 @@
 ---
-- name: create {{ win_agent_path }} directory
+- name: create {{ windows_agent_log }} directory
   win_file:
-    path: '{{ win_agent_path }}'
+    path: '{{ windows_agent_log }}'
+    recurse: yes
     state: directory
 
-- name: create {{ win_agent_logs }} directory
+- name: create {{ windows_agent_path }} directory
   win_file:
-    path: '{{ win_agent_logs }}'
+    path: '{{ windows_agent_path }}'
+    recurse: yes
     state: directory
-
-- name: checking for installer
-  win_stat:
-    path: '{{ win_agent_path }}{{ windows_cylance_agent_filename }}'
-  register: installer
-
-- name: move installer to {{ win_agent_path }} directory
-  win_copy:
-    src: '{{ lin_agent_path }}/{{ item.name }}'
-    dest: '{{ win_agent_path }}{{ item.name }}'
-  with_items:
-    - { name: '{{ windows_cylance_agent_filename }}'}
-  when: not installer.stat.exists
 
 - name: install cylance agent (windows)
   win_package:
-    path: '{{ win_agent_path }}\\{{ item.name }}'
-    chdir: '{{ win_agent_path }}'
+    path: '{{ windows_cylance_agent_url }}'
+    state: present
+    log_path: '{{ windows_agent_log }}\\cylance_log.txt'
+    validate_certs: no
     arguments:
       - PIDKEY={{ cylance_pid_id }}
       - LAUNCHAPP=0
       - VENUEZONE={{ cylance_venue_id }}
-    state: present
-    log_path: '{{ win_agent_logs }}\\{{ item.name }}_log.txt'
-    validate_certs: no
-  with_items:
-    - { name: '{{ windows_cylance_agent_filename }}' }
