@@ -19,6 +19,7 @@
     product_id: '{{ windows_cylance_product_id }}'
     validate_certs: no
     arguments:
-      - /PIDKEY={{ cylance_pid_id }}
-      - /LAUNCHAPP=0
-      - /VENUEZONE={{ cylance_venue_id }}
+      - /qn
+      - PIDKEY={{ cylance_pid_id }}
+      - LAUNCHAPP=0
+      - VENUEZONE={{ cylance_venue_id }}

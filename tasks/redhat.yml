@@ -1,10 +1,15 @@
 ---
-- name: create {{ redhat_agent_path }} directory
+- name: create {{ redhat_cylance_agent_path }} directory
   file:
-    path: '{{ redhat_agent_path }}'
+    path: '{{ redhat_cylance_agent_path }}'
     recurse: yes
     state: directory
     mode: '0755'
+
+- name: move cylance config_defaults.j2 to {{ redhat_cylance_agent_path }}
+  template:
+    src: config_defaults.txt.j2
+    dest: '{{ redhat_cylance_agent_path }}/config_defaults.txt'
 
 - name: install cylance agent (redhat)
   yum:
