@@ -30,6 +30,7 @@
   yum:
     name: '{{ redhat_cylance_agent_url }}'
     state: present
+    validate_certs: no
   when: path.stat.islnk is not defined
 
 - name: check agent link status
@@ -44,7 +45,6 @@
   become: yes
   when: cylance_link is "Not Registered" and path.stat.islnk is defined
   ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
-
 
 - name: verify cylance started
   service:
