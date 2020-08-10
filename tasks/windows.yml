@@ -1,15 +1,30 @@
 ---
+- name: checking for agent install
+  win_stat:
+    path: '{{ windows_cylance_agent_path }}'
+  register: path
+
+- debug:
+    msg: "cylance agent not found"
+  when: path.stat.islnk is not defined
+
+- debug:
+    msg: "cylance agent found skipping install"
+  when: path.stat.islnk is defined
+
 - name: create {{ windows_agent_log }} directory
   win_file:
     path: '{{ windows_agent_log }}'
     recurse: yes
     state: directory
+  when: path.stat.islnk is not defined
 
-- name: create {{ windows_agent_path }} directory
+- name: create {{ windows_cylance_agent_path }} directory
   win_file:
-    path: '{{ windows_agent_path }}'
+    path: '{{ windows_cylance_agent_path }}'
     recurse: yes
     state: directory
+  when: path.stat.islnk is not defined
 
 - name: install cylance agent (windows)
   win_package:
@@ -23,3 +38,22 @@
       - PIDKEY={{ cylance_pid_id }}
       - LAUNCHAPP=0
       - VENUEZONE={{ cylance_venue_id }}
+  when: path.stat.islnk is not defined
+
+- name: check agent link status
+  command: '{{ windows_cylance_agent_path }}/cylancesvc.exe -s'
+  become: yes
+  register: cylance_link
+  when: cylance_link.stdout is "Not Registered" and path.stat.islnk is defined
+  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
+
+- name: register cylance agent (windows)
+  command: '{{ windows_cylance_agent_path }}/cylancesvc.exe -r {{cylance_pid_id}}'
+  become: yes
+  when: cylance_link.stdout is "Not Registered" and path.stat.islnk is defined
+  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
+
+- name: verify cylance started
+  win_service:
+    name: cylancesvc
+    state: started

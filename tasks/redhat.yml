@@ -1,17 +1,53 @@
 ---
+- name: checking for agent install
+  stat:
+    path: '{{ redhat_cylance_agent_path }}'
+  register: path
+
+- debug:
+    msg: "cylance agent not found"
+  when: path.stat.islnk is not defined
+
+- debug:
+    msg: "cylance agent found skipping install"
+  when: path.stat.islnk is defined
+
 - name: create {{ redhat_cylance_agent_path }} directory
   file:
     path: '{{ redhat_cylance_agent_path }}'
     recurse: yes
     state: directory
     mode: '0755'
+  when: path.stat.islnk is not defined
 
 - name: move cylance config_defaults.j2 to {{ redhat_cylance_agent_path }}
   template:
     src: config_defaults.txt.j2
     dest: '{{ redhat_cylance_agent_path }}/config_defaults.txt'
+  when: path.stat.islnk is not defined
 
 - name: install cylance agent (redhat)
   yum:
     name: '{{ redhat_cylance_agent_url }}'
     state: present
+  when: path.stat.islnk is not defined
+
+- name: check agent link status
+  command: '{{ redhat_cylance_agent_path }}/cylance -s'
+  become: yes
+  register: cylance_link
+  when: cylance_link is "Not Registered" and path.stat.islnk is defined
+  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
+
+- name: register cylance agent (redhat)
+  command: '{{ redhat_cylance_agent_path }}/cylance -r {{cylance_pid_id}}'
+  become: yes
+  when: cylance_link is "Not Registered" and path.stat.islnk is defined
+  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
+
+
+- name: verify cylance started
+  service:
+    name: cylancesvc
+    state: started
+  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a nessus master host

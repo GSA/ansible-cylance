@@ -1,9 +1,16 @@
 ---
 # defaults file for ansible-cylance
-redhat_cylance_agent_path: "/opt/cylance"
-windows_agent_path: "C:\\Program Files\\Cylance\\Desktop"
-windows_agent_log: "C:\\Temp\\Logs"
-redhat_cylance_agent_url: ""
-windows_cylance_agent_url: ""
+
+#universal
 cylance_pid_id: ""
 cylance_venue_id: ""
+
+#redhat
+redhat_cylance_agent_path: "/opt/Cylance/desktop" # default redhat install directory
+redhat_cylance_agent_url: "" # default redhat agent url
+
+#windows
+windows_cylance_agent_path: "C:\\Program Files\\Cylance\\Desktop" # default windows install directory
+windows_cylance_agent_url: "" # default windows agent artifactory url
+windows_cylance_product_id: "" #  win_package using a url requires a product_id
+windows_agent_log: "C:\\Temp\\Logs" # default agent windows log directory

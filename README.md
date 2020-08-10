@@ -13,12 +13,28 @@ Required Packages (this role requires access to the following packages/installer
 Role Variables
 --------------
 
+### Universal
+
 | Variable | Default | Purpose |
 | ------ | ------ | ------ |
-| redhat_cylance_agent_filename | "" | redhat installer msi |
-| windows_cylance_agent_filename | "" | windows installer msi |
 | cylance_venue_id | "" | cylance venue id |
 | cylance_pid_id | "" | cylance key |
+
+### Windows
+
+| Variable | Default | Purpose |
+| ------ | ------ | ------ |
+| windows_cylance_agent_path | "C:\\Program Files\\Cylance\\Desktop" | default windows install directory |
+| windows_cylance_agent_url | "" | windows installer msi |
+| windows_cylance_product_id | "" | windows product_id |
+| windows_agent_log | "C:\Temp\Logs" | default agent windows log directory |
+
+### Redhat
+
+| Variable | Default | Purpose |
+| ------ | ------ | ------ |
+| redhat_cylance_agent_path | "/opt/Cylance/desktop" | default redhat install directory |
+| redhat_cylance_agent_url | "" | redhat installer rpm |
 
 Dependencies
 ------------
