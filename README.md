@@ -6,7 +6,7 @@ This ansible role installs and configures the cylance agent required to communic
 Requirements
 ------------
 
-Required Packages (this role requires access to the following packages/installers)
+Required Packages (this role requires access to the following packages/installers via an external repository)
 - cylance.rpm - redhat installer package
 - cylance.msi - windows installer package
 
