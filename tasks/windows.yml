@@ -18,12 +18,6 @@
     state: directory
   when: not agent.exists
 
-- name: create {{ win_agent_logs }} directory
-  win_file:
-    path: '{{ win_agent_logs }}'
-    state: directory
-  when: not agent.exists
-
 - name: install cylance agent (windows)
   win_package:
     path: '{{ windows_cylance_agent_url }}'
