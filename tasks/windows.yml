@@ -1,37 +1,48 @@
 ---
-- name: create {{ win_agent_path }} directory
+- name: checking for agent install
+  win_service:
+    name: cylancesvc
+  register: agent
+
+- debug:
+    msg: "cylance agent not found (installing)"
+  when: not agent.exists
+
+- debug:
+    msg: "cylance agent found (skipping install)"
+  when: agent.exists
+
+- name: create {{ windows_agent_log }} directory
   win_file:
     path: '{{ win_agent_path }}'
     state: directory
+  when: not agent.exists
 
 - name: create {{ win_agent_logs }} directory
   win_file:
     path: '{{ win_agent_logs }}'
     state: directory
-
-- name: checking for installer
-  win_stat:
-    path: '{{ win_agent_path }}{{ windows_cylance_agent_filename }}'
-  register: installer
-
-- name: move installer to {{ win_agent_path }} directory
-  win_copy:
-    src: '{{ lin_agent_path }}/{{ item.name }}'
-    dest: '{{ win_agent_path }}{{ item.name }}'
-  with_items:
-    - { name: '{{ windows_cylance_agent_filename }}'}
-  when: not installer.stat.exists
+  when: not agent.exists
 
 - name: install cylance agent (windows)
   win_package:
-    path: '{{ win_agent_path }}\\{{ item.name }}'
-    chdir: '{{ win_agent_path }}'
+    path: '{{ windows_cylance_agent_url }}'
+    state: present
+    log_path: '{{ windows_agent_log }}\cylance_log.txt'
+    product_id: '{{ windows_cylance_product_id }}'
     arguments:
       - PIDKEY={{ cylance_pid_id }}
       - LAUNCHAPP=0
       - VENUEZONE={{ cylance_venue_id }}
-    state: present
-    log_path: '{{ win_agent_logs }}\\{{ item.name }}_log.txt'
-    validate_certs: no
-  with_items:
-    - { name: '{{ windows_cylance_agent_filename }}' }
+  when: not agent.exists
+
+- name: register cylance agent (windows)
+  command: '{{ windows_cylance_agent_path }}\cylancesvc.exe -r {{cylance_pid_id}}'
+  when: not agent.exists
+  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
+
+- name: verify cylance started
+  win_service:
+    name: cylancesvc
+    state: started
+    start_mode: auto

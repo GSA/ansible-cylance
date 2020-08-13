@@ -31,7 +31,28 @@
 
 - name: install cylance agent (redhat)
   yum:
-    name: '{{ lin_agent_path }}/{{ item.name }}'
-    state: installed
-  with_items:
-    - { name: '{{ redhat_cylance_agent_filename }}'}
+    name: '{{ redhat_cylance_agent_url }}'
+    state: present
+    validate_certs: no
+    disable_plugin: "yum-rhn-plugin"
+    disablerepo: "rhel-8-appstream-rhui-rpms,rhel-8-baseos-rhui-rpms,rhui-client-config-server-8"
+  when: path.stat.islnk is not defined
+
+- name: check agent link status
+  command: '{{ redhat_cylance_agent_path }}/cylance -s'
+  become: yes
+  register: cylance_link
+  when: path.stat.islnk is not defined
+  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
+
+- name: register cylance agent (redhat)
+  command: '{{ redhat_cylance_agent_path }}/cylance -r {{cylance_pid_id}}'
+  become: yes
+  when: path.stat.islnk is not defined
+  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
+
+- name: verify cylance started
+  service:
+    name: cylancesvc
+    state: started
+  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a nessus master host
