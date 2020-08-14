@@ -14,7 +14,7 @@
 
 - name: create {{ windows_agent_log }} directory
   win_file:
-    path: '{{ win_agent_path }}'
+    path: '{{ windows_agent_log }}'
     state: directory
   when: not agent.exists
 
@@ -29,11 +29,6 @@
       - LAUNCHAPP=0
       - VENUEZONE={{ cylance_venue_id }}
   when: not agent.exists
-
-- name: register cylance agent (windows)
-  command: '{{ windows_cylance_agent_path }}\cylancesvc.exe -r {{cylance_pid_id}}'
-  when: not agent.exists
-  ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
 
 - name: verify cylance started
   win_service:
