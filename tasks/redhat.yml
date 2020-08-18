@@ -16,12 +16,14 @@
   file:
     path: '{{ redhat_cylance_agent_path }}'
     state: directory
+    mode: 0500
   when: not agent.stat.exists
 
 - name: move config_defaults.j2 to {{ redhat_cylance_agent_path }}/config_defaults.txt directory
   template:
     src: config_defaults.j2
     dest: '{{ redhat_cylance_agent_path }}/config_defaults.txt'
+    mode: 0400
   when: not agent.stat.exists
 
 - name: install cylance agent (redhat)
