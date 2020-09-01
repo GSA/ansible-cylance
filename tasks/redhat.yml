@@ -44,7 +44,7 @@
   ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host
 
 - name: register cylance agent (redhat)
-  command: '{{ redhat_cylance_agent_path }}/desktop/cylance -r {{ cylance_pid_id }}'
+  command: '{{ redhat_cylance_agent_path }}/desktop/cylance -r {{ agent_secrets.cylance_pid_id }}'
   become: yes
   when: not agent.stat.exists
   ignore_errors: yes # adding ignore_errors since this will fail until you have an environment with connectivity to a cylance master host

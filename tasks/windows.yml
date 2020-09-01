@@ -25,9 +25,12 @@
     log_path: '{{ windows_agent_log }}\cylance_log.txt'
     product_id: '{{ windows_cylance_product_id }}'
     arguments:
-      - /PIDKEY='{{ agent_secrets.cylance_pid_id }}'
-      - /LAUNCHAPP=0
-      - /VENUEZONE='{{ agent_secrets.cylance_venue_id }}'
+  when: not agent.exists
+
+- name: register cylance agent (windows)
+  win_command: .\cylancesvc.exe /register /PIDKEY='{{ agent_secrets.cylance_pid_id }}' /enable
+  args:
+    chdir: '{{ windows_cylance_agent_path }}'
   when: not agent.exists
 
 - name: verify cylance started
